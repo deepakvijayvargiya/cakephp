@@ -94,11 +94,28 @@ trait QueryTrait
     public function repository(RepositoryInterface $table = null)
     {
         if ($table === null) {
-            return $this->_repository;
+            deprecationWarning(
+                'Using Query::repository() as getter is deprecated. ' .
+                'Use getRepository() instead.'
+            );
+
+            return $this->getRepository();
         }
+
         $this->_repository = $table;
 
         return $this;
+    }
+
+    /**
+     * Returns the default table object that will be used by this query,
+     * that is, the table that will appear in the from clause.
+     *
+     * @return \Cake\Datasource\RepositoryInterface|\Cake\ORM\Table
+     */
+    public function getRepository()
+    {
+        return $this->_repository;
     }
 
     /**
